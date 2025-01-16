@@ -26,4 +26,24 @@ defmodule HangmanImplGameTest do
     |> assert
 
   end
+
+  test "when game is won state doesnt change" do
+    game = Game.new_game("word")
+    game = Map.put(game, :game_state, :won)
+
+    {new_game, _tully} = Game.make_move(game, "x")
+    assert new_game == game
+
+  end
+
+  test "states duplicate" do
+    game = Game.new_game("word")
+    {game, _tally} = Game.make_move(game, "x")
+    assert game.game_state != :already_used
+    {game, _tally} = Game.make_move(game, "y")
+    assert game.game_state != :already_used
+    {game, _tally} = Game.make_move(game, "x")
+    assert game.game_state == :already_used
+
+  end
 end
